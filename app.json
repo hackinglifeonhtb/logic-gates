@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "fbce8578-c997-4f0c-b908-82928383f925"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "logic-gates"
+    },
+    "android": {
+      "package": "com.logic_gates"
+    }
+  }
+}

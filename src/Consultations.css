@@ -1,0 +1,12 @@
+.consultations-notifications-number {
+    background-color: #070a3a;
+    height:20px;
+    width:20px;
+    border-radius:50%;
+    color:white !important;
+    text-align:center;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size:12px;
+}

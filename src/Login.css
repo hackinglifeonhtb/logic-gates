@@ -1,0 +1,67 @@
+h1, p, h2, h3, .firstOne * {
+    color:black;
+}
+
+.loginForm * {
+    margin:0px 0px 10px;
+}
+
+input[type='email'], input[type='password'], input[type='text'] {
+    background-color:transparent;
+    border:1px solid transparent;
+    border-radius:10px;
+    width:100%;
+    height:100%;
+}
+
+input[type='submit'],.loginForm button {
+    background-color: #9fef00 !important;
+    padding:10px;
+    color:black;
+    border:1px solid #9fef00 !important;
+    border-radius:5px;
+    width: 75%;
+}
+input {
+    outline: none;
+}
+
+header button, #menu button, .Visit, .search-button, .new-ticket-button, .new-comment-button {
+    background-color: #9fef00 !important;
+    padding:10px;
+    color:black;
+    border:1px solid #9fef00 !important;
+    border-radius:5px;
+}
+
+.loginDisplay {
+    display:block;
+}
+.loginDiv {
+    width:50%;
+}
+@media only screen and (max-width: 800px) {
+    .loginDisplay {
+        display: none;
+    }
+    .loginDiv {
+        width:100%;
+    }
+}
+
+.to-signup-page-button {
+    background-color: white;
+    padding:15px 25px;
+    border-radius: 15px;
+    border:1px solid silver;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.to-signup-page-button:hover {
+    animation: 0.4s both running switch_to_another_color;
+}
+@keyframes switch_to_another_color {
+    from {background-color:white; color:black;}
+    to {background-color:#9fef00;}
+}
