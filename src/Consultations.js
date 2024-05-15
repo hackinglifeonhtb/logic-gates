@@ -72,12 +72,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState} from 'react'
 import { Animator, ScrollContainer, ScrollPage, batch, Fade, FadeIn, FadeOut, Move, MoveIn, MoveOut, Sticky, StickyIn, StickyOut, Zoom, ZoomIn, ZoomOut } from "react-scroll-motion";
-import {
-    Pusher,
-    PusherMember,
-    PusherChannel,
-    PusherEvent,
-  } from '@pusher/pusher-websocket-react-native';
+import Pusher from 'pusher-js';
   
   const pusher = Pusher.getInstance();
 
