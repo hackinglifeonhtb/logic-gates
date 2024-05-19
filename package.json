@@ -5,6 +5,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "@pusher/push-notifications-web": "^1.1.0",
+    "@react-native-community/netinfo": "^11.3.2",
     "@react-spectrum/meter": "^3.5.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
