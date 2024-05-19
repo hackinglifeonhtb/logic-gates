@@ -7,6 +7,13 @@ import './SignUp.css'
 import TafkeerDesign from './Images/tafkeerDesign.png'
 import discord from './Images/discord.png'
 import tafkeer from './Images/tafkeer.png'
+import LogicGatesBanner from './Images/Logic Gates Logo Banner.mp4'
+import email_icon from './Images/email_icon_1.png'
+import email_icon_2 from './Images/email_icon_2.png'
+import apple from './Images/apple.png'
+import microsoft from './Images/microsoft.png'
+import google from './Images/google.png'
+import google_2 from './Images/google_2.png'
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function SignUp() {
@@ -74,66 +81,159 @@ export default function SignUp() {
                     pauseOnHover
             />
             <div style={{
-                display:'flex'
+                backgroundColor:'#F2F5F8'
             }}>
-                <div align="center" className="signupDiv" style={{
+                <div align="center" style={{
                     height:'100vh',
                     display:'flex',
                     justifyContent:'center',
                     alignItems:'center'
-                }}>
+                }} className="loginDiv-second">
                     <div align="center" style={{
-                        backgroundColor:'#181a1b',
+                        backgroundColor:'white',
                         boxShadow:'10px 10px 10px white',
                         padding:'20px',
                         borderRadius:'10px',
-                        width:'75%'
+                        width:'800px',
+                        color:'black'
                     }}>
-                        <img src={tafkeer} style={{height:'150px', width:'150px'}} />
-                        <h3>تسجيل جديد</h3>
+                        <div style={{
+                            display:'flex',
+                            justifyContent:'space-around',
+                            direction:'rtl'
+                        }}>
+                            <video src={LogicGatesBanner} autoplay="true" loop="true"></video>
+                            <div align="center" style={{
+                                display:'flex',
+                                justifyContent:'center',
+                                alignItems:'center'
+                            }}>
+                                <button className="to-signup-page-button">انشاء حساب</button>
+                            </div>
+                        </div>
+                        <div style={{
+                            display:'flex',
+                            justifyContent:'space-around',
+                            direction:'rtl'
+                        }}>
+                            <h3>تسجيل دخول</h3>
+                            <div style={{
+                                display:'flex',
+                                justifyContent:'space-around',
+                                width:'30%'
+                            }}>
+                                <div style={{
+                                    backgroundColor:'#F2F5F8',
+                                    padding:'15px',
+                                    borderRadius:'50%'
+                                }} className="to-signup-page-button">
+                                    <img src={apple} width="30" />
+                                </div>
+                                <div style={{
+                                    backgroundColor:'#F2F5F8',
+                                    padding:'15px',
+                                    borderRadius:'50%'
+                                }} className="to-signup-page-button">
+                                    <img src={google} width="30" />
+                                </div>
+                                <div style={{
+                                    backgroundColor:'#F2F5F8',
+                                    padding:'15px',
+                                    borderRadius:'50%'
+                                }} className="to-signup-page-button">
+                                    <img src={microsoft} width="30" />
+                                </div>
+                            </div>
+                        </div>
                         <br/>
                         <div className="loginForm">
-                            <input type="text" className="text-success" placeholder="الاسم الأول" onChange={(e)=>setFirstName(e.target.value)} />
+                        <div style={{
+                                display:'flex',
+                                direction:'rtl',
+                                backgroundColor:'#F2F5F8',
+                                color:'#393D48',
+                                width:'85%',
+                                padding:'10px',
+                                borderRadius:'50px',
+                                alignItems:'center',
+                            }}>
+                                <div align="center" style={{
+                                    display:'flex',
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    height:'100%',
+                                    width:'10%',
+                                }}>
+                                    <img src={email_icon} width="40" />
+                                </div>
+                                <input type="text" className='text-success' placeholder="الاسم الأول" onChange={(e)=>setFirstName(e.target.value)} />
+                            </div>
                             <br/>
-                            <input type="text" className="text-success" placeholder="الاسم الثاني" onChange={(e)=>setSecondName(e.target.value)}  />
+                            <div style={{
+                                display:'flex',
+                                direction:'rtl',
+                                backgroundColor:'#F2F5F8',
+                                color:'#393D48',
+                                width:'85%',
+                                padding:'10px',
+                                borderRadius:'50px',
+                                alignItems:'center'
+                            }}>
+                                <div align="center" style={{
+                                    display:'flex',
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    width:'10%'
+                                }}>
+                                    <img src={email_icon} width="40" />
+                                </div>
+                                <input type="text" className='text-success' placeholder="الاسم الثاني" onChange={(e)=>setSecondName(e.target.value)} />
+                            </div>
+                            <div style={{
+                                display:'flex',
+                                direction:'rtl',
+                                backgroundColor:'#F2F5F8',
+                                color:'#393D48',
+                                width:'85%',
+                                padding:'10px',
+                                borderRadius:'50px',
+                                alignItems:'center'
+                            }}>
+                                <div align="center" style={{
+                                    display:'flex',
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    width:'10%'
+                                }}>
+                                    <img src={email_icon} width="40" />
+                                </div>
+                                <input type="email" className='text-success' placeholder="البريد الالكتروني الخاص بك" onChange={(e)=>setEmail(e.target.value)} />
+                            </div>
+                            <div style={{
+                                display:'flex',
+                                direction:'rtl',
+                                backgroundColor:'#F2F5F8',
+                                color:'#393D48',
+                                width:'85%',
+                                padding:'10px',
+                                borderRadius:'50px',
+                                alignItems:'center'
+                            }}>
+                                <div align="center" style={{
+                                    display:'flex',
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    width:'10%'
+                                }}>
+                                    <img src={email_icon} width="40" />
+                                </div>
+                                <input type="password" className='text-success' placeholder="كلمة المرور الخاصة بك" onChange={(e)=>setPassword(e.target.value)} />
+                            </div>
                             <br/>
-                            <input type="email" className='text-success' placeholder="البريد الالكتروني الخاص بك" onChange={(e)=>setEmail(e.target.value)} />
-                            <br/>
-                            <input type="password" className='text-success' placeholder="كلمة السر" onChange={(e)=>setPassword(e.target.value)} />
-                            <br/>
-                            <Link to='http://localhost:3000/login'><h5 style={{padding:'15px'}}>لدي حساب</h5></Link>
-                            <button value="تسجيل الدخول" onClick={()=>SignUpProcess()}>تسجيل</button>
+                            <Link to='http://localhost:3000/sign_up'><h5 style={{padding:'15px'}}>ليس لدي حساب؟</h5></Link>
+                            <button value="تسجيل الدخول" onClick={()=>SignUpProcess()}>تسجيل الدخول</button>
                         </div>
                     </div>
-                </div>
-                <div align="center" className='bg-success firstOne signupDisplay' style={{
-                    height:'100vh',
-                    width:'50%',
-                    justifyContent:'center',
-                    alignItems:'center'
-                }}>
-                    <div>
-                        <img src={TafkeerDesign} style={{height:'300px', width:'500px'}} />
-                    </div>
-                    <h1>منصة تفكير التعليمية</h1>
-                    <h3 style={{letterSpacing:'2px', lineHeight:'40px'}}>منصة تعليمية للمواد الجامعية في جميع التخصصات وكل ذلك مجانًا</h3>
-                    <br/>
-                    <br/>
-                    <h5 style={{width:'75%'}}>يمكنك طرح الأسئلة والاستفسارات للمدربين عن طريق سيرفرنا في الديسكورد</h5>
-                    <br/>
-                    <Link to='https://discord.gg/HackTheBox'>
-                        <div align="center" style={{
-                            width:'100px',
-                            height:'100px',
-                            backgroundColor:'#181a1b',
-                            borderRadius:'15px',
-                            display:'flex',
-                            justifyContent:'center',
-                            alignItems:'center'
-                        }}>
-                            <img src={discord} style={{height:'75px', width:'75px'}} />
-                        </div>
-                    </Link>
                 </div>
             </div>
         </>

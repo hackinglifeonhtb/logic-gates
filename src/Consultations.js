@@ -71,15 +71,18 @@ import 'bootstrap/dist/css/bootstrap.css';
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState} from 'react'
+import {useParams} from 'react-router-dom'
 import { Animator, ScrollContainer, ScrollPage, batch, Fade, FadeIn, FadeOut, Move, MoveIn, MoveOut, Sticky, StickyIn, StickyOut, Zoom, ZoomIn, ZoomOut } from "react-scroll-motion";
+import * as PusherPushNotifications from "@pusher/push-notifications-web";
 import Pusher from 'pusher-js';
-  
-  const pusher = Pusher.getInstance();
 
 export default function Consultations() {
+  const {consultation_id} = useParams();
   const [name, setName] = useState('')
   const [keys, setKeys] = useState([])
   const [randomW, setRandomW] = useState([])
+  const [message, setMessage] = useState('')
+  const [username, setUsername] = useState('')
   const video1before_animation = batch(StickyIn(), FadeIn(), ZoomIn());
   const video2before_animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveIn(0,-200));
   const video3before_animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveOut(0,-200));
@@ -91,17 +94,29 @@ export default function Consultations() {
   const video3animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveIn(0,-200));
   const video4animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveOut(0,-200));
   const [exams, setExams] = useState([])
+  const [messages, setMessages] = useState([])
+  const [tags, setTags] = useState([])
+  const [consultationer, setConsultationer] = useState(false)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
     axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
       .then((res)=>{
-        if(res.data.firstName !== undefined && res.data.secondName !== undefined)
-          setName(res.data.firstName+' '+res.data.secondName)
+          console.log(res.data)
+          setUsername(res.data.firstName+' '+res.data.secondName)
           console.log('explore')
-          axios.post('http://localhost:8082/explore_exams_progress', {email:res.data.email})
+          axios.post(`http://localhost:8082/consultation/${consultation_id}`, {email:res.data.email})
                 .then((res2)=>{
-                    setExams(res2.data.exams)
+                    console.log(res2.data)
+                    setMessages(res2.data.messages)
+                    setTags(res2.data.tags)
+                    setConsultationer(res2.data.consultationer)
+                    axios.post(`http://localhost:8082/consultation-remove-notifications/${consultation_id}`, {email:res.data.email})
+                            .then((response)=>{
+                                
+                            }).catch((err)=>{
+                                console.log(err)
+                            })
                 }).catch((err)=>{
                     console.log(err)
                 })
@@ -109,24 +124,42 @@ export default function Consultations() {
 
       })
   },[])
-  const setup = async () => {
-    await pusher.init({
-        apiKey: "19c2eb03ffadb575a377",
-        cluster: "ap2"
-      });
-        
-      await pusher.connect();
-      await pusher.subscribe({
-        channelName: "logic-gates", 
-        onEvent: (event) => {
-          console.log(`Event received: ${event}`);
-        }
-      });
+  const sendMessage = () =>{
+    axios.post(`http://localhost:8082/consultation-send-message/${consultation_id}`, {username, message})
+        .then((res)=>{
+            console.log(username)
+            //setMessages((messages)=>[...messages, {username:username, message}])
+        }).catch((err)=>{
+            console.log(err)
+        })
   }
   useEffect(()=>{
-    setup()
-  },[])
+    const pusher = new Pusher('19c2eb03ffadb575a377', {
+        cluster: 'ap2'
+    });
+    const channel = pusher.subscribe(`logic-gates-${consultation_id}`);
+    console.log(consultation_id)
+    channel.bind(`send-message`,(data)=>{
+        console.log(data.username, username)
+        //if(data.username != username) {
+            setMessages((messages)=>[...messages, {username: data.username, message: data.message}])
+            console.log('got', data)
+        //}
+    })
+    return () => {
+        channel.bind(`send-message`,(data)=>{
+            console.log(data.username, username)
+            //if(data.username != username) {
+                setMessages((messages)=>[...messages, {username: data.username, message: data.message}])
+                console.log('got', data)
+            //}
+        })
+        pusher.unsubscribe(`logic-gates-${consultation_id}`); 
+    }
+  }, [])
   return (
+    <>
+    {username.length>0 ? 
     <>
           <div>
         <Header />
@@ -155,7 +188,8 @@ export default function Consultations() {
                                 boxShadow:'0 3px 10px rgb(0 0 0 / 0.2)',
                                 borderRadius:'5px',
                                 display:'flex',
-                                alignItems:'center'
+                                alignItems:'center',
+                                justifyContent:'space-between'
                             }}>
                                 <div>
                                     <div align="center">
@@ -164,6 +198,32 @@ export default function Consultations() {
                                         }}>
                                             <video src={LogicGatesBanner} width="120" autoplay="true" loop="true" />
                                         </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style={{
+                                        display:'flex',
+                                        fontSize:'9px',
+                                        width:'250px',
+                                        flexWrap:'wrap'
+                                    }}>
+                                        {
+                                            tags && tags.map((tag)=>{
+                                                return (
+                                                    <div className="test-explore-div-button-page" style={{
+                                                        width:'75px',
+                                                        height:'25px',
+                                                        padding:'5px 10px',
+                                                        fontSize:'7px',
+                                                        margin:'2px',
+                                                        backgroundColor:`${tag.provided ? '#111770' : ''}`,
+                                                        color: `${tag.provided ? 'white' : ''}`,
+                                                    }}>
+                                                        {tag.tag}
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -193,27 +253,46 @@ export default function Consultations() {
                             </div>
                         </div>
                         <div style={{
-                            padding:'10px 20px'
+                            overflowY:'auto',
+                            height:'270px'
                         }}>
-                            <div>
-                                <div style={{
-                                    display:'flex'
-                                }}>
-                                    <img src={helpdesk} width="30px" height="30px" />
+                            {messages.map((message)=>{
+                                return (
                                     <div style={{
-                                        boxShadow:'0 3px 10px rgb(0 0 0 / 0.2)',
-                                        width:'200px',
-                                        borderRadius:'5px',
-                                        padding:'10px 5px',
-                                        fontSize:'12px'
+                                        direction:`${message.username == username ? 'ltr' : 'rtl'}`
                                     }}>
-                                        <span>السلام عليكم ورحمة الله وبركاته</span>
-                                        <br/>
-                                        <span>كيف ممكن نخدمك؟</span>
+                                        <div style={{
+                                            padding:'10px 20px'
+                                        }}>
+                                            <div>
+                                                <div style={{
+                                                    display:'flex'
+                                                }}>
+                                                    <img src={helpdesk} width="30px" height="30px" />
+                                                    <div style={{
+                                                        boxShadow:'0 3px 10px rgb(0 0 0 / 0.2)',
+                                                        width:'200px',
+                                                        borderRadius:'5px',
+                                                        padding:'10px 5px',
+                                                        fontSize:'12px',
+                                                        backgroundColor:`${message.username == username ? '#111770' : 'white'}`,
+                                                        color:`${message.username == username ? 'white' : 'black'}`
+                                                        /*direction:'rtl'*/
+                                                    }}>
+                                                        <span>{message.username}</span>
+                                                        <br/>
+                                                        <span>{message.message}</span>
+                                                        {/*<br/>
+                                                        <span>كيف ممكن نخدمك؟</span>*/}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                )
+                            })
+                        }
+                      </div>
                     </div>
                     <div style={{
                         width:'100%',
@@ -234,8 +313,8 @@ export default function Consultations() {
                             padding:'10px 20px',
                             width:'600px',
                             height:'50px'
-                        }} />
-                        <img src={email_gif} width="50" height="50" style={{cursor:'pointer'}} />
+                        }} onChange={(e)=>setMessage(e.target.value)}/>
+                        <img src={email_gif} width="50" height="50" style={{cursor:'pointer'}} onClick={()=>sendMessage()} />
                     </div>
                 </div>
             </div>
@@ -287,6 +366,9 @@ export default function Consultations() {
         </div>
       </div>
     </div>
+    </>
+    :
+    <div align="center"><video src={LogicGatesBanner}></video></div>}
     </>
   );
 }

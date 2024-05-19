@@ -21,10 +21,10 @@ import Exam from './Exam'
 import Join_Exam from './Join_Exam'
 import Results from './Results'
 import Consultations from './Consultations'
+import ConsultationsPage from './ConsultationsPage'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
     <Router>
       <Routes>
         <Route path='/' element={<App />} />
@@ -45,7 +45,8 @@ ReactDOM.render(
         <Route path='/exam/:exam_id' element={<Exam />} />
         <Route path='/join_exam/:exam_id' element={<Join_Exam />} />
         <Route path='/exam/:exam_id/last_results' element={<Results />} />
-        <Route path='/consultations' element={<Consultations />} />
+        <Route path='/consultation/:consultation_id' element={<Consultations />} />
+        <Route path='/consultations' element={<ConsultationsPage />} />
         {/*<Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />          
 <Route path='/challenges/:challenge' element={<Challenge />} />*/}
@@ -60,7 +61,7 @@ ReactDOM.render(
 <Route path='*' element={<><Header/><br/><br/><br/><br/><br/><br/><div align="center"><img src={ERROR} width="300" /><h1 style={{color:'crimson'}}>Not Found!</h1></div></>} />*/}
       </Routes>
     </Router>
-  </React.StrictMode>,
+  ,
   document.getElementById("root")
 );
 

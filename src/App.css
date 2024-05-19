@@ -238,7 +238,7 @@ h1,p, h3 {
 
 @keyframes switch_to_another_color1 {
   from {background-color:white; color:black;}
-  to {background-color:#111770; color:white;}
+  to {background-color:#111770 !important; color:white;}
 }
 
 .test-explore-div {

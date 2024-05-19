@@ -344,3 +344,25 @@ a {
     to {background-color:#111770; color:white;}
   }
   
+
+  .dropdown-toggle.notification::after {
+    content:attr(notifications-number);
+    position:relative;
+    background-color:black;
+    border-radius:50%;
+    height:15px;
+    width:15px;
+    font-size:6px;
+    color: white;
+    border:0px;
+    text-align:center;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    bottom:40px;
+    /*right: 1px;*/
+  }
+  .dropdown-toggle.notification-zero::after {
+    display:none;
+    /*right: 1px;*/
+  }
