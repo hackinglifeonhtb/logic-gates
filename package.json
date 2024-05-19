@@ -2,6 +2,7 @@
   "name": "tafkeer",
   "version": "0.1.0",
   "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "@pusher/push-notifications-web": "^1.1.0",
     "@react-spectrum/meter": "^3.5.0",
