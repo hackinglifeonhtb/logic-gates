@@ -23,6 +23,8 @@ export default function Header( props ) {
     const [notifications, setNotifications] = useState([])
     const [user_id, setUserId] = useState('')
     const [cart, setCart] = useState('')
+    const [onlineUsers, setOnlineUsers] = useState([])
+    const [online, setIsOnline] = useState('')
     useEffect(()=>{
         axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
             .then((res)=>{
@@ -49,6 +51,46 @@ export default function Header( props ) {
                 console.log(window.location.href)
             })
     }, [])
+    /*useEffect(()=>{
+      const pusher = new Pusher('19c2eb03ffadb575a377', {
+        cluster: 'ap2'
+    });
+      axios.post('http://localhost:3000/pusher/auth', {
+
+  socket_id: pusher.connection.socket_id,
+
+  channel_name: 'precense-channel',
+
+  user_id: '',
+
+  user_info: {
+
+    name: 'USER_NAME'
+
+  }
+
+}, {
+
+  headers: {
+
+    'X-CSRF-Token': 'YOUR_CSRF_TOKEN'
+
+  }
+
+})
+
+.then(response => {
+
+  console.log(response.data);
+
+})
+
+.catch(error => {
+
+  console.log(error.response.data);
+
+});
+    }, [])*/
     const buttonOnClick = (message, user_sent, title) => {
 
         /*pushNotifications.publishToInterests(['hello'], {
@@ -106,6 +148,23 @@ export default function Header( props ) {
                 buttonOnClick(data.notification_message, data.notification_user, data.notification_title);
             //}
         })
+        const presenceChannel = pusher.subscribe('presence-channel');
+
+    // Detect online/offline users
+    presenceChannel.bind('pusher:subscription_succeeded', (members) => {
+      console.log(members)
+      const onlineUsers = Object.keys(members.members);
+      setOnlineUsers(onlineUsers);
+    });
+    presenceChannel.bind('pusher:member_added', (member) => {
+      console.log(member)
+      setOnlineUsers((prevUsers) => [...prevUsers, member.id]);
+    });
+    presenceChannel.bind('pusher:member_removed', (member) => {
+      console.log(member)
+      setOnlineUsers((prevUsers) => prevUsers.filter((user) => user !== member.id));
+    });
+
         return () => {
             channel.bind(`logic-gates-notifications`,(data)=>{
                 //if(data.username != username) {
@@ -114,9 +173,50 @@ export default function Header( props ) {
                     buttonOnClick(data.notification_message, data.notification_user, data.notification_title);
                 //}
             })
+            presenceChannel.unbind_all();
             pusher.unsubscribe(`logic-gates-${user_id}`); 
         }
       }, [user_id])
+
+
+
+
+
+
+      /*useEffect(()=>{
+
+        const pusher = new Pusher('19c2eb03ffadb575a377', {
+          cluster: 'ap2'
+      });
+        // Join presence channel
+    const presenceChannel = pusher.subscribe('presence-channel');
+
+    // Detect online/offline users
+    presenceChannel.bind('pusher:subscription_succeeded', (members) => {
+      console.log(members)
+      const onlineUsers = Object.keys(members.members);
+      setOnlineUsers(onlineUsers);
+    });
+    presenceChannel.bind('pusher:member_added', (member) => {
+      console.log(member)
+      setOnlineUsers((prevUsers) => [...prevUsers, member.id]);
+    });
+    presenceChannel.bind('pusher:member_removed', (member) => {
+      console.log(member)
+      setOnlineUsers((prevUsers) => prevUsers.filter((user) => user !== member.id));
+    });
+
+    // Real-time updates example
+    // Clean up event listeners and Pusher channels
+    return () => {
+      presenceChannel.unbind_all();
+      presenceChannel.unsubscribe();
+    };
+  }, []);*/
+
+
+
+
     return (
         <>
             <div className="header-container" style={props.style}>
@@ -127,6 +227,7 @@ export default function Header( props ) {
             }}>
                 <div className="container" style={{direction:'rtl'}}>
                     <div style={{display:'flex'}}>
+                        {/*onlineUsers.join(',')*/}
                         <video src={LogicGatesBanner} autoplay="true" loop="true" width="200"></video>
                         {/*<h1>Logic Gates</h1>*/}
                     </div>
@@ -135,31 +236,32 @@ export default function Header( props ) {
                         <li>عنا</li>
                         <Link to='/exams'><li>اختبارات</li></Link>
                         <Link to='/tickets'><li>اسأل</li></Link>
-                        <Link to={`/cart/${cart}`} disable={cart.length==0}><li>اشتراك</li></Link>
+                        <Link to={`/payment/basic/908793098745394098494`} disable={cart.length==0}><li>اشتراك</li></Link>
                         {!verified ?                             <Link to='/login'> <li><button style={{fontSize:'20px'}}>{verified ? name : 'تسجيل الدخول'}</button></li> </Link>
  : <></>}
                     </ul>
                     {verified ? 
                             <>
-<div class="dropdown show">
+<div class="dropdown show" style={{zIndex:'100000'}}>
   <a class={`btn dropdown-toggle notification${notifications.length < 1 ? "-zero" : ""}`} href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={()=>setClicked2((clicked2)=>!clicked2)} style={{border:'0px',backgroundColor:'white'}} notifications-number={`${notifications.length}`}>
     <img src={Bell} width="30" height="20" style={{height:'30px'}} />
   </a>
-  <div class="dropdown-menu" dir="rtl" style={{display:`${clicked2 ? 'block' : 'none'}`, direction:'rtl'}} aria-labelledby="dropdownMenuLink">
-    {notifications.length > 0 ? notifications.map((notification)=>{
+  <div class="dropdown-menu" dir="rtl" style={{display:`${clicked2 ? 'block' : 'none'}`, direction:'rtl',marginRight:'-90px'}} aria-labelledby="dropdownMenuLink">
+    {notifications.length > 0 ? notifications.map((notification,index)=>{
         return (
-            <Link className="dropdown-item" to={`http://localhost:3000/consultation/${notification.consultation_id}`} style={{borderBottom:'1px solid grey'}}>
+            <Link className="dropdown-item" to={`http://localhost:3000/consultation/${notification.consultation_id}`} style={{borderBottom:`${index < notifications.length-1 ? "1px solid grey" : "0px"}`}}>
                 <div>
                     <h6 style={{fontSize:'11px'}}>{notification.notification_title}</h6>
                     <h6 style={{fontSize:'10px'}}>{notification.notification_user}</h6>
-                    <h6 style={{fontSize:'9px'}}>{notification.notification_message}</h6>
+                    <h6 style={{fontSize:'9px',whiteSpace: 'nowrap',textOverflow: 'ellipsis',
+                                        maxWidth: '150px',overflow:'hidden'}}>{notification.notification_message}</h6>
                 </div>
             </Link>
         )
     }) : <h6 style={{fontSize:'11px',direction:'rtl'}}>لا توجد اشعارات حتى الآن</h6>}
   </div>
 </div>
-<div class="dropdown show">
+<div class="dropdown show need-to-be-hidden">
   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={()=>setClicked((clicked)=>!clicked)}>
     {name}
   </a>
@@ -193,7 +295,7 @@ export default function Header( props ) {
                         <li><Link to={`/cart/${cart}`} disable={cart.length==0}>السلة</Link></li>
                         <li><Link to={`/cart/${cart}`} disable={cart.length==0}>عنا</Link></li>
                         {verified ? 
-                            <>
+                            <li>
                             <div class="dropdown show">
 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={()=>setClicked((clicked)=>!clicked)}>
 {name}
@@ -204,7 +306,7 @@ export default function Header( props ) {
 <Link class="dropdown-item" href="#" onClick={()=>{localStorage.setItem('token','');window.location.reload()}}>تسجيل الخروج</Link>
 </div>
 </div>
-                        </>
+                        </li>
                             :
                             <Link to='/login'> <li><button>{verified ? name : 'تسجيل الدخول'}</button></li> </Link>
                         }

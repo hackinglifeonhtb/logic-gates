@@ -62,6 +62,7 @@ import './Exams.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import addNotification from 'react-push-notification';
 import { Notifications } from 'react-push-notification';
+import logicGatesLoading from './Images/Logic Gates 3.gif'
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState} from 'react'
@@ -85,6 +86,7 @@ export default function ConsultationsPage() {
   const [consultationer, setConsultationer] = useState(false)
   const [takenConsultations, setTakenConsultations] = useState([])
   const [availableConsultations, setAvailableConsultations] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
@@ -98,6 +100,7 @@ export default function ConsultationsPage() {
                 .then((res2)=>{
                     setConsultationer(res2.data.consultationer)
                     console.log(res2.data)
+                    setLoading(false)
                     if(res2.data.consultationer) {
                       axios.post('http://localhost:8082/all-consultations', {email: res.data.email})
                             .then((res3)=>{
@@ -151,9 +154,11 @@ export default function ConsultationsPage() {
   };
   return (
     <>
-          <div>
+      <div>
         <Header />
       </div>
+    { loading ? <div align="center" style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}><img src={logicGatesLoading} width="300" /></div> :
+    <>
     <div dir="rtl" className="container-all">
       <div style={{
         color:'black',
@@ -172,24 +177,21 @@ export default function ConsultationsPage() {
         (takenConsultations.length + availableConsultations.length) > 0 ? 
             <>
               <div>
-              <div style={{
-            display:'flex',
+          <div style={{
             justifyContent:'center'
           }}>
+                {takenConsultations ? <h3 className='exams-word'>الاستشارات التي استلمتها:</h3> : <></>}
           <div style={{
             display:'flex',
             flexWrap:'wrap',
             alignItems:'center',
             padding:'20px',
-            justifyContent:'space-between',
-            width:'1200px'
-          }}>
+          }} className="justify-content-centers">
             {
               takenConsultations && takenConsultations.map((consultation, index)=>{
                 return (
-                  <div>
-                    <h3 className='exams-word'>الاستشارات التي استلمتها:</h3>
-                    <div className="test-explore-div-page">
+                  <div>                    
+                    <div className="test-explore-div-page" style={{marginLeft:'20px'}}>
                       <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
                         <img src={ExamTime} width="100" />
                       </div>
@@ -212,23 +214,21 @@ export default function ConsultationsPage() {
           </div>
         </div>
         <div style={{
-            display:'flex',
             justifyContent:'center'
           }}>
+          {availableConsultations ? <h3 className='exams-word'>الاستشارات المتاحة للاستلام:</h3> : <></>}
           <div style={{
             display:'flex',
             flexWrap:'wrap',
             alignItems:'center',
             padding:'20px',
-            justifyContent:'space-between',
             width:'1200px'
-          }}>
+          }} className="justify-content-center">
             {
               availableConsultations && availableConsultations.map((consultation, index)=>{
                 return (
                   <div>
-                    <h3 className='exams-word'>الاستشارات المتاحة للاستلام:</h3>
-                    <div className="test-explore-div-page">
+                    <div className="test-explore-div-page" style={{marginLeft:'20px'}}>
                       <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
                         <img src={ExamTime} width="100" />
                       </div>
@@ -291,6 +291,8 @@ export default function ConsultationsPage() {
           </div>
         </div>
     </div>
+    </>
+    }
     </>
   );
 }

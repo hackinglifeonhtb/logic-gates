@@ -61,6 +61,7 @@ import mada from './Images/mada_2.png'
 import vat from './Images/VAT.png'
 import './Exam.css'
 import 'bootstrap/dist/css/bootstrap.css';
+import logicGatesLoading from './Images/Logic Gates 3.gif'
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState} from 'react'
@@ -84,6 +85,7 @@ export default function Exams() {
   const [exam_topic, setExamTopic] = useState('')
   const [exam_description, setExamDescription] = useState('')
   const [results, setResults] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
@@ -96,6 +98,7 @@ export default function Exams() {
                   setExamTopic(exam.data.exam_topic);
                   setExamDescription(exam.data.exam_description)
                   setResults(exam.data.results == undefined ? [] : exam.data.results)
+                  setLoading(false)
                 })
       }).catch((err)=>{
       })
@@ -105,6 +108,8 @@ export default function Exams() {
           <div>
         <Header />
       </div>
+    { loading ? <div align="center" style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}><img src={logicGatesLoading} width="300" /></div> :
+    <>
     <div dir="rtl" className="container-all">
       <div style={{
         color:'black',
@@ -138,6 +143,8 @@ export default function Exams() {
       </div>
     </div>
 
+    </>
+    }
     </>
   );
 }

@@ -208,7 +208,7 @@ h1,p, h3 {
   cursor:pointer;
   color:black;
   border-radius: 50px;
-  font-size:18px;
+  font-size:12px;
   font-weight: bold;
 }
 
@@ -219,15 +219,15 @@ h1,p, h3 {
 .explore-exams-via-type-button {
   background-color:transparent;
   border:2px solid #111770;
-  padding:10px 25px;
+  padding:5px 10px !important;
   cursor:pointer;
   color:black;
   border-radius: 50px;
-  font-size:18px;
+  font-size:12px !important;
   font-weight: bold;
   margin-left:10px;
   margin-right: 0px;
-  flex-basis: 300px;
+  flex-basis: 180px !important;
     flex-grow: 0;
     flex-shrink: 0;
 }
@@ -290,8 +290,8 @@ p {
 }
 
 .footer-p {
-  font-size:20px;
-  width:100%;
+  font-size:14px;
+  width:90%;
 }
 
 .color-blue {
@@ -322,3 +322,57 @@ p {
 header {  
   animation: 1s ease-out 0s 1 slideInFromLeft;
 }
+
+.first-div-and-premium-container {
+    margin:0px 10px;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+@media only screen and (max-width: 1130px) {
+  /*.first-div-and-premium-container {
+    display:block;
+  }*/
+  .premium-div {
+    margin-top:-5%;
+    margin-right:0;
+  }
+}
+
+.setting-width-on-explore-exams-via-type-buttons-container {
+  width:1200px;
+}
+
+.exams-container-to-explore {
+  justify-content:space-between;
+}
+.the-performance-of-the-premium {
+  width:500px;
+}
+.pic-for-the-premium-features img {
+  width:500px;
+}
+@media only screen and (max-width: 450px) {
+  /*.first-div-and-premium-container {
+    display:block;
+  }*/
+  .premium-div {
+    width: 323.55px;
+  }
+
+  .setting-width-on-explore-exams-via-type-buttons-container {
+    width:100%;
+  }
+  .exams-container-to-explore {
+    justify-content:center;
+  }
+  .the-performance-of-the-premium {
+    width:100%;
+  }
+  .pic-for-the-premium-features img {
+    width:350px;
+  }
+}
+

@@ -67,10 +67,11 @@ import sticker from './Images/sticker.gif'
 import image_uploading from './Images/interaction.gif'
 import helpdesk from './Images/helpdesk.gif'
 import email_gif from './Images/email.gif'
+import logicGatesLoading from './Images/Logic Gates 3.gif'
 import 'bootstrap/dist/css/bootstrap.css';
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
-import {React, useEffect, useState} from 'react'
+import {React, useEffect, useState, useRef} from 'react'
 import {useParams} from 'react-router-dom'
 import { Animator, ScrollContainer, ScrollPage, batch, Fade, FadeIn, FadeOut, Move, MoveIn, MoveOut, Sticky, StickyIn, StickyOut, Zoom, ZoomIn, ZoomOut } from "react-scroll-motion";
 import * as PusherPushNotifications from "@pusher/push-notifications-web";
@@ -83,6 +84,8 @@ export default function Consultations() {
   const [randomW, setRandomW] = useState([])
   const [message, setMessage] = useState('')
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [notifications, setNotifications] = useState(0)
   const video1before_animation = batch(StickyIn(), FadeIn(), ZoomIn());
   const video2before_animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveIn(0,-200));
   const video3before_animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveOut(0,-200));
@@ -97,6 +100,11 @@ export default function Consultations() {
   const [messages, setMessages] = useState([])
   const [tags, setTags] = useState([])
   const [consultationer, setConsultationer] = useState(false)
+  const [inBottom, setInBottom] = useState(false)
+  const [typing, setTyping] = useState([])
+  const element = useRef(null);
+  const [typingStatusRN, setTypingStatusRN] = useState(false)
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
@@ -104,6 +112,7 @@ export default function Consultations() {
       .then((res)=>{
           console.log(res.data)
           setUsername(res.data.firstName+' '+res.data.secondName)
+          setEmail(res.data.email)
           console.log('explore')
           axios.post(`http://localhost:8082/consultation/${consultation_id}`, {email:res.data.email})
                 .then((res2)=>{
@@ -111,9 +120,10 @@ export default function Consultations() {
                     setMessages(res2.data.messages)
                     setTags(res2.data.tags)
                     setConsultationer(res2.data.consultationer)
+                    setLoading(false)
                     axios.post(`http://localhost:8082/consultation-remove-notifications/${consultation_id}`, {email:res.data.email})
                             .then((response)=>{
-                                
+                                setNotifications(response.data.user_notifications)
                             }).catch((err)=>{
                                 console.log(err)
                             })
@@ -125,13 +135,21 @@ export default function Consultations() {
       })
   },[])
   const sendMessage = () =>{
-    axios.post(`http://localhost:8082/consultation-send-message/${consultation_id}`, {username, message})
+    axios.post(`http://localhost:8082/consultation-send-message/${consultation_id}`, {username, message, email})
         .then((res)=>{
             console.log(username)
             //setMessages((messages)=>[...messages, {username:username, message}])
         }).catch((err)=>{
             console.log(err)
         })
+  }
+  const typingMessage = (typing_status) => {
+    axios.post(`http://localhost:8082/consultation-typing-message/${consultation_id}`, {username, email, typing: typing_status})
+            .then((res)=>{
+                console.log(username, res.data.typing)
+            }).catch((err)=>{
+                console.log(err)
+            })
   }
   useEffect(()=>{
     const pusher = new Pusher('19c2eb03ffadb575a377', {
@@ -142,39 +160,123 @@ export default function Consultations() {
     channel.bind(`send-message`,(data)=>{
         console.log(data.username, username)
         //if(data.username != username) {
-            setMessages((messages)=>[...messages, {username: data.username, message: data.message}])
+            const scrollToTheBottom = () => {
+                const timer = setTimeout(()=>{
+                        const scrollEl = element.current;
+                        scrollEl?.scroll({
+                            top: scrollEl?.scrollHeight,
+                            behavior: 'smooth',
+                        });
+                }, 0);
+            };
+           scrollToTheBottom();
+            setMessages((messages)=>[...messages, {username: data.username, message: data.message, consultationer: data.consultationer}])
             console.log('got', data)
+            setNotifications((notifications)=>notifications+1)
+                    //}
+    })
+    channel.bind(`typing-message`, async (data)=>{
+        //object[data.username] = data.typing;
+        //if(typing.length == 0 || typing.filter((typing_user)=>typing_user.username == data.username).length == 0)
+                if(data.typing)
+                    setTyping((typing)=>[...typing.filter((typing_user)=>typing_user.username != data.username), {username: data.username, typing: data.typing}]);
+                else {
+                    setTyping((typing)=>typing.filter((typing_user)=>typing_user.username != data.username));
+                }
+                //setTyping((typing)=>typing.filter((typing_user)=>typing_user.username == data.username).length == 0?[...typing, {username: data.username, typing: data.typing}]:typing.filter((typing_user)=>typing_user.username != data.username));
+        //else {
+          //  typing[typing.findIndex((typing_user) => typing_user.username == data.username)].typing = data.typing;
         //}
+        console.log(1, typing)
     })
     return () => {
         channel.bind(`send-message`,(data)=>{
             console.log(data.username, username)
             //if(data.username != username) {
-                setMessages((messages)=>[...messages, {username: data.username, message: data.message}])
+                const scrollToTheBottom = () => {
+                    const timer = setTimeout(()=>{
+                            const scrollEl = element.current;
+                            scrollEl?.scroll({
+                                top: scrollEl?.scrollHeight,
+                                behavior: 'smooth',
+                            });
+                    }, 0);
+                };
+               scrollToTheBottom();
+                setMessages((messages)=>[...messages, {username: data.username, message: data.message, consultationer: data.consultationer}])
                 console.log('got', data)
+                setNotifications((notifications)=>notifications+1)
+                            //}
+        })
+        channel.bind(`typing-message`, async (data)=>{
+            //object[data.username] = data.typing;
+            //if(typing.length == 0 || typing.filter((typing_user)=>typing_user.username == data.username).length == 0)
+                    if(data.typing)
+                        setTyping((typing)=>[...typing.filter((typing_user)=>typing_user.username != data.username), {username: data.username, typing: data.typing}]);
+                    else {
+                        setTyping((typing)=>typing.filter((typing_user)=>typing_user.username != data.username));
+                    }
+                    //setTyping((typing)=>typing.filter((typing_user)=>typing_user.username == data.username).length == 0?[...typing, {username: data.username, typing: data.typing}]:typing.filter((typing_user)=>typing_user.username != data.username));
+            //else {
+              //  typing[typing.findIndex((typing_user) => typing_user.username == data.username)].typing = data.typing;
             //}
+            console.log(2, typing)
         })
         pusher.unsubscribe(`logic-gates-${consultation_id}`); 
     }
   }, [])
+  /*useEffect(()=>{
+    if(message.length == 0) {
+        typingMessage(false);
+        setTypingStatusRN(false);
+    } else if(typingStatusRN == false) {
+        typingMessage(true);
+        setTypingStatusRN(true);
+    }
+    const timer = setTimeout(()=>{
+        setTypingStatusRN(false);
+        typingMessage(false);
+    },5000);
+    return () => clearTimeout(timer);
+  }, [message])*/
+  useEffect(()=>{
+        const scrollToTheBottom = () => {
+            const scrollEl = element.current;
+            scrollEl?.scroll({
+                top: scrollEl?.scrollHeight,
+                behavior: 'smooth',
+            });
+        };
+        scrollToTheBottom();
+  }, [])
+  /*useEffect(()=>{
+    setTimeout(()=>{
+        setNotifications(0);
+    }, 3000)
+  }, [])*/
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) { 
+        setInBottom(true);
+        setNotifications(0);
+     } else {
+        setInBottom(false);
+     }
+  }
   return (
     <>
-    {username.length>0 ? 
-    <>
-          <div>
+    <div>
         <Header />
       </div>
+    { loading ? <div align="center" style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}><img src={logicGatesLoading} width="300" /></div> :
+    <>
     <div dir="rtl" className="container-all">
       <div>
         <div style={{
-            display:'flex',
-            direction:'ltr'
-        }}>
+        }} className="display-flex-when-desktop ltr-when-desktop">
             <div style={{
-                width:'70%',
-                height: '550px',
                 borderRight:'1px solid grey'
-            }}>
+            }} className="seventy-percent-width-when-desktop">
                 <div>
                     <div style={{
                         height:'490px',
@@ -183,18 +285,15 @@ export default function Consultations() {
                     }}>
                         <div align="center">
                             <div style={{
-                                width:'500px',
-                                height:'110px',
                                 boxShadow:'0 3px 10px rgb(0 0 0 / 0.2)',
                                 borderRadius:'5px',
-                                display:'flex',
                                 alignItems:'center',
-                                justifyContent:'space-between'
-                            }}>
+                            }} className="flex-space-between-then-none-center">
                                 <div>
                                     <div align="center">
                                         <div style={{
-                                            display:'flex'
+                                            display:'flex',
+                                            justifyContent:'center'
                                         }}>
                                             <video src={LogicGatesBanner} width="120" autoplay="true" loop="true" />
                                         </div>
@@ -238,7 +337,8 @@ export default function Consultations() {
                                     boxShadow:'0 3px 10px rgb(0 0 0 / 0.2)',
                                     borderRadius:'5px',
                                     direction:'rtl',
-                                    padding:'10px 20px'
+                                    padding:'10px 20px',
+                                    overflow:'auto'
                             }}>
                                 
                                     <ul dir="rtl" style={{
@@ -254,8 +354,7 @@ export default function Consultations() {
                         </div>
                         <div style={{
                             overflowY:'auto',
-                            height:'270px'
-                        }}>
+                        }} className="height-from-270px" ref={element} onScroll={(e)=>handleScroll(e)}>
                             {messages.map((message)=>{
                                 return (
                                     <div style={{
@@ -297,12 +396,11 @@ export default function Consultations() {
                     <div style={{
                         width:'100%',
                         height:'60px',
-                        display:'flex',
                         justifyContent:'space-between',
                         direction:'rtl',
                         alignItems:'center'
-                    }}>
-                        <div>
+                    }} className="display-flex-when-switch-to-desktop">
+                        <div className="display-none-when-switch-to-phone">
                             <img src={happy_1} width="30" height="30" />
                             <img src={sticker} width="30" height="30" />
                             <img src={image_uploading} width="30" height="30" />
@@ -311,20 +409,32 @@ export default function Consultations() {
                             borderRadius:'7px',
                             boxShadow:'0 3px 10px rgb(0 0 0 / 0.2)',
                             padding:'10px 20px',
-                            width:'600px',
+                            width:'70%',
                             height:'50px'
-                        }} onChange={(e)=>setMessage(e.target.value)}/>
+                        }} onChange={(e)=>{setMessage(e.target.value);/*typingMessage(true)*/}}/>
                         <img src={email_gif} width="50" height="50" style={{cursor:'pointer'}} onClick={()=>sendMessage()} />
+                    </div>
+                    <div style={{
+                        display:'flex'
+                    }}>
+                        <h6 style={{fontSize:'14px'}}>{typing.filter((typing_user)=>typing_user.username != username && typing_user.typing).map((typing_user)=>typing_user.username).join(', ')+`${typing.filter((typing_user)=>typing_user.username != username).length == 0 ? '' : typing.filter((typing_user)=>typing_user.username != username).length == 1 ? ' يكتب ...' : ' يكتبون ...'}`}</h6>
+                        {/*<h6 style={{fontSize:'14px'}}>{typing.length > 0 ? typing[0].username+' are typing ...' : ''}</h6>*/}
+                        {typing.filter((typing_user)=>typing_user.username != username).length > 0 ? 
+                            <>
+                                <div className="one"></div>
+                                <div className="two"></div>
+                                <div className="three"></div>
+                            </>
+                            :<></>
+                        }
                     </div>
                 </div>
             </div>
             <div style={{
-                width:'30%',
-                height:'550px',
                 backgroundColor:'white',
                 display:'flex',
                 justifyContent:'center'
-            }}>
+            }} className="thirty-percent-width-when-desktop">
                 <div>
                     <div style={{
                         height:'80px',
@@ -346,18 +456,18 @@ export default function Consultations() {
                             }}>
                                 <img src={helpdesk} width="40" />
                                 <div>
-                                    <h6 style={{fontSize:'12px'}}>المستشار</h6>
+                                    <h6 style={{fontSize:'12px'}}>{messages.length > 0 &&  messages[messages.length-1].consultationer ? "المستشار" : consultationer ? "المستشير" : "أنت"}</h6>
                                     <h6 style={{
                                         fontSize:'10px',
                                         overflow: 'hidden',
                                         whiteSpace: 'nowrap',
                                         textOverflow: 'ellipsis',
                                         maxWidth: '150px'
-                                    }}>السلام عليكم ورحمة الله وبركاته كيف حالك استاذنا الكريم</h6>
+                                    }}>{messages.length > 0 && messages[messages.length-1].message}</h6>
                                 </div>
                             </div>
-                            <div className="consultations-notifications-number">
-                                1
+                            <div className={`consultations-notifications-number ${notifications > 0 ? '' : 'opacity-less'}`} style={{display:`${notifications > 0 ? 'block' : 'block'}`}}>
+                                {notifications || 1}
                             </div>
                         </div>
                     </div>
@@ -367,8 +477,7 @@ export default function Consultations() {
       </div>
     </div>
     </>
-    :
-    <div align="center"><video src={LogicGatesBanner}></video></div>}
+    }
     </>
   );
 }

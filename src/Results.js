@@ -62,6 +62,7 @@ import './Exams.css'
 import './Results.css'
 import {useParams, Link, useSearchParams} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css';
+import logicGatesLoading from './Images/Logic Gates 3.gif'
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState, useRef} from 'react'
@@ -99,6 +100,7 @@ export default function Exams() {
   const video3animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveIn(0,-200));
   const video4animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveOut(0,-200));
   const [exams, setExams] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
@@ -110,6 +112,7 @@ export default function Exams() {
           axios.post('http://localhost:8082/results', {email:res.data.email,exam_id})
                 .then((res2)=>{
                     console.log(res2.data)
+                    setLoading(false);
                     setProgressEndValueState(res2.data.results[res2.data.results.length-1].result)
                     setProgressEndValueState2(res2.data.results[res2.data.results.length-2].result)
                     setProgressEndValueState3(res2.data.results[res2.data.results.length-3].result)
@@ -207,10 +210,13 @@ export default function Exams() {
     }
   },[progress6, progressEndValueState6])
   return (
-    <div dir="rtl" className="container-all">
-      <div>
+    <>
+         <div>
         <Header />
       </div>
+    { loading ? <div align="center" style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}><img src={logicGatesLoading} width="300" /></div> :
+    <div dir="rtl" className="container-all">
+
       <div className="results">
         <div className="container">
             <div className="circular-progress" style={{
@@ -271,6 +277,7 @@ export default function Exams() {
         </div>
       </div>
     </div>
-
+      }
+    </>
   );
 }

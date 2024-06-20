@@ -60,6 +60,7 @@ import mada from './Images/mada_2.png'
 import vat from './Images/VAT.png'
 import './Exams.css'
 import 'bootstrap/dist/css/bootstrap.css';
+import logicGatesLoading from './Images/Logic Gates 3.gif'
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState} from 'react'
@@ -79,6 +80,7 @@ export default function Exams() {
   const video3animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveIn(0,-200));
   const video4animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveOut(0,-200));
   const [exams, setExams] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
@@ -90,6 +92,7 @@ export default function Exams() {
           axios.post('http://localhost:8082/explore_exams_progress', {email:res.data.email})
                 .then((res2)=>{
                     setExams(res2.data.exams)
+                    setLoading(false)
                 }).catch((err)=>{
                     console.log(err)
                 })
@@ -99,9 +102,11 @@ export default function Exams() {
   },[])
   return (
     <>
-          <div>
+              <div>
         <Header />
       </div>
+    { loading ? <div align="center" style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}><img src={logicGatesLoading} width="300" /></div> :
+    <>
     <div dir="rtl" className="container-all">
       <div style={{
         color:'black',
@@ -148,6 +153,8 @@ export default function Exams() {
           </div>
         </div>
     </div>
+    </>
+    }
     </>
   );
 }

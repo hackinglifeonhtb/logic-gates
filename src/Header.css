@@ -26,7 +26,7 @@ header .container ul li {
     #nav {
         display:block;
     }
-    .container li {
+    .container li, .dropdown.show.need-to-be-hidden {
         display:none;
     }
     #logout_pic {
@@ -323,13 +323,18 @@ a {
 .btn.btn-secondary.dropdown-toggle {
     height: 30px;
     width: 100px;
-    font-size: 12px;
+    font-size: 12px !important;
     text-align:center;
     align-items:center;
     display:flex;
     background-color:white;
     color:black;
     border: 1px solid #111770; 
+    text-indent: 0px;
+}
+.dropdown-item {
+    font-size:12px !important;
+    direction:rtl;
 }
 
 .btn.btn-secondary.dropdown-toggle:hover {

@@ -11,8 +11,8 @@ import LogicGatesBanner from './Images/Logic Gates Logo Banner.mp4'
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css" ;
 import { useSearchParams } from "react-router-dom";
-import email_icon from './Images/email_icon_1.png'
-import email_icon_2 from './Images/email_icon_2.png'
+import email_icon from './Images/emails-login-pic-unscreen.gif'
+import password_icon from './Images/lock-unscreen.gif'
 import apple from './Images/apple.png'
 import microsoft from './Images/microsoft.png'
 import google from './Images/google.png'
@@ -64,28 +64,20 @@ export default function Login() {
                     pauseOnHover
             />
             <div style={{
-                backgroundColor:'#F2F5F8'
+                backgroundColor:'#F2F5F8',
+                display:'flex',
+                justifyContent:'center',
+                alignItems:'center',
+                height:'100vh'
             }}>
-                <div align="center" style={{
-                    height:'100vh',
-                    display:'flex',
-                    justifyContent:'center',
-                    alignItems:'center'
-                }} className="loginDiv-second">
-                    <div align="center" style={{
-                        backgroundColor:'white',
-                        boxShadow:'10px 10px 10px white',
-                        padding:'20px',
-                        borderRadius:'10px',
-                        width:'800px',
-                        color:'black'
-                    }}>
+                <div align="center" className="the-whole-login-container loginDiv-second">
+                    <div align="center" className="the-whole-login-template-container">
                         <div style={{
                             display:'flex',
                             justifyContent:'space-around',
                             direction:'rtl'
                         }}>
-                            <video src={LogicGatesBanner} autoplay="true" loop="true"></video>
+                            <video src={LogicGatesBanner} autoplay="true" loop="true" className="login-video"></video>
                             <div align="center" style={{
                                 display:'flex',
                                 justifyContent:'center',
@@ -105,76 +97,42 @@ export default function Login() {
                                 justifyContent:'space-around',
                                 width:'30%'
                             }}>
-                                <div style={{
-                                    backgroundColor:'#F2F5F8',
-                                    padding:'15px',
-                                    borderRadius:'50%'
-                                }} className="to-signup-page-button">
-                                    <img src={apple} width="30" />
+                                <div className="login-features">
+                                    <img src={apple} width="20" />
                                 </div>
-                                <div style={{
-                                    backgroundColor:'#F2F5F8',
-                                    padding:'15px',
-                                    borderRadius:'50%'
-                                }} className="to-signup-page-button">
-                                    <img src={google} width="30" />
+                                <div className="login-features">
+                                    <img src={google} width="20" />
                                 </div>
-                                <div style={{
-                                    backgroundColor:'#F2F5F8',
-                                    padding:'15px',
-                                    borderRadius:'50%'
-                                }} className="to-signup-page-button">
-                                    <img src={microsoft} width="30" />
+                                <div className="login-features">
+                                    <img src={microsoft} width="20" />
                                 </div>
                             </div>
                         </div>
                         <br/>
                         <div className="loginForm">
-                        <div style={{
-                                display:'flex',
-                                direction:'rtl',
-                                backgroundColor:'#F2F5F8',
-                                color:'#393D48',
-                                width:'85%',
-                                padding:'10px',
-                                borderRadius:'50px',
-                                alignItems:'center',
-                            }}>
-                                <div align="center" style={{
-                                    display:'flex',
-                                    justifyContent:'center',
-                                    alignItems:'center',
-                                    height:'100%',
-                                    width:'10%',
-                                }}>
-                                    <img src={email_icon} width="40" />
+                        <div className="login-form-input">
+                                <div className="login-form-input-container" align="center">
+                                    <img src={email_icon} width="30" />
                                 </div>
                                 <input type="email" className='text-success' placeholder="البريد الالكتروني الخاص بك" onChange={(e)=>setEmail(e.target.value)} />
+                            </div>
+                            <br/>
+                            <div className="login-form-input">
+                                <div className="login-form-input-container" align="center">
+                                    <img src={password_icon} width="30" />
+                                </div>
+                                <input type="password" className='text-success' placeholder="كلمة المرور الخاصة بك" onChange={(e)=>setPassword(e.target.value)} />
                             </div>
                             <br/>
                             <div style={{
                                 display:'flex',
                                 direction:'rtl',
-                                backgroundColor:'#F2F5F8',
-                                color:'#393D48',
-                                width:'85%',
-                                padding:'10px',
-                                borderRadius:'50px',
+                                justifyContent:'space-between',
                                 alignItems:'center'
                             }}>
-                                <div align="center" style={{
-                                    display:'flex',
-                                    justifyContent:'center',
-                                    alignItems:'center',
-                                    width:'10%'
-                                }}>
-                                    <img src={email_icon} width="40" />
-                                </div>
-                                <input type="password" className='text-success' placeholder="كلمة المرور الخاصة بك" onChange={(e)=>setPassword(e.target.value)} />
+                                <Link to='http://localhost:3000/sign_up'><h5 style={{fontSize:'12px'}}>ليس لدي حساب؟</h5></Link>
+                                <button value="تسجيل الدخول" onClick={()=>LoginProcess()}>تسجيل الدخول</button>
                             </div>
-                            <br/>
-                            <Link to='http://localhost:3000/sign_up'><h5 style={{padding:'15px'}}>ليس لدي حساب؟</h5></Link>
-                            <button value="تسجيل الدخول" onClick={()=>LoginProcess()}>تسجيل الدخول</button>
                         </div>
                     </div>
                 </div>

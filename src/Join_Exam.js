@@ -62,6 +62,7 @@ import vat from './Images/VAT.png'
 import './Exam.css'
 import './Join_Exam.css'
 import 'bootstrap/dist/css/bootstrap.css';
+import logicGatesLoading from './Images/Logic Gates 3.gif'
 //import video11 from './Images/11.mp4'
 //import video12 from './Images/12.mp4'
 import {React, useEffect, useState} from 'react'
@@ -90,6 +91,7 @@ export default function Exams() {
   const [results, setResults] = useState([])
   const [exam, setExam] = useState([])
   const [percent, setPercent] = useState(0.0)
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
@@ -103,6 +105,7 @@ export default function Exams() {
                   console.log(exam.data.exam)
                   setExam([exam.data.exam])
                   setPercent(100/exam.data.exam.questions.length);
+                  setLoading(false);
                 })
       }).catch((err)=>{
       })
@@ -126,9 +129,11 @@ export default function Exams() {
   }
   return (
     <>
-            <div>
+                <div>
             <Header style={{borderBottom:'1px solid rgb(225, 225, 225)'}} />
         </div>
+    { loading ? <div align="center" style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}><img src={logicGatesLoading} width="300" /></div> :
+    <>
     
     <div dir="rtl" className="container-all">
         <div style={{
@@ -170,6 +175,8 @@ export default function Exams() {
             </div>
         </div>
     </div>
+    </>
+    }
     </>
   );
 }
