@@ -5,3 +5,42 @@
   to = "/consultation/:consultation_id/"
   query = { }
   status = 301
+  [[redirects]]
+  from = "/consultation/:consultation_id"
+  to = "/consultation/:consultation_id/"
+  status = 301
+
+[[redirects]]
+  from = "/courses/:course_id"
+  to = "/courses/:course_id/"
+  status = 301
+
+[[redirects]]
+  from = "/courses/:course_id/:lesson_name"
+  to = "/courses/:course_id/:lesson_name/"
+  status = 301
+
+[[redirects]]
+  from = "/tickets/:ticket_id"
+  to = "/tickets/:ticket_id/"
+  status = 301
+
+[[redirects]]
+  from = "/products/:product_id"
+  to = "/products/:product_id/"
+  status = 301
+
+[[redirects]]
+  from = "/exam/:exam_id"
+  to = "/exam/:exam_id/"
+  status = 301
+
+[[redirects]]
+  from = "/join_exam/:exam_id"
+  to = "/join_exam/:exam_id/"
+  status = 301
+
+[[redirects]]
+  from = "/cart/:cart_id"
+  to = "/cart/:cart_id/"
+  status = 301
