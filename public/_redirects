@@ -1,7 +1,7 @@
 /*  /index.html  200
 /*  //index.html 200
 # Redirect all URLs with trailing slashes
-/*/ /:splat 301
+/*  /   301
 
 # Redirect /consultation/:consultation_id to /consultation/:consultation_id/
 /consultation/:consultation_id /consultation/:consultation_id/ 301
