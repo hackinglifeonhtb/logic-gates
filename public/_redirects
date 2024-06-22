@@ -1,1 +1,1 @@
-/consultation/:consultation_id /consultation/:consultation_id/ 301
+/consultation/:consultation_id/* /consultation/:consultation_id 301
