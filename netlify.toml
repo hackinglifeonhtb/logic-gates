@@ -1,6 +1,10 @@
 [build]
-    functions = "functions" 
+command = "npm run build"
+functions = "functions/"
+publish = "build"
+
 [[redirects]]
-    from = "/*"
-    to = "/.netlify/functions/resourceWithNestedPath"
-    status = 200
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
