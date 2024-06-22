@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router, Redirect } from "react-router-dom";
 import './index.css';
 import App from './App';
 import Login from './Login';
@@ -36,24 +36,24 @@ ReactDOM.render(
         <Route path='/sign_up' element={<SignUp />} />
         <Route path='/courses' element={<Courses />} />
         <Route path='/bot_managing' element={<BotManaging />} />
-        <Route path='/courses/:course_id' element={<Course />} />
-        <Route path='/courses/:course_id/:lesson_name' element={<Lessons />} />
+        <Route path='/courses/:course_id/' element={<Course />} />
+        <Route path='/courses/:course_id/:lesson_name/' element={<Lessons />} />
         <Route path='/tickets' element={<Tickets />} />
-        <Route path='/tickets/:ticket_id' element={<Ticket />} />
+        <Route path='/tickets/:ticket_id/' element={<Ticket />} />
         <Route path='/ticket/new_ticket' element={<Push_Ticket />} />
         <Route path='/products' element={<Products />} />
-        <Route path='/products/:product_id' element={<Product />} />
-        <Route path='/cart/:cart_id' element={<Cart />} />
+        <Route path='/products/:product_id/' element={<Product />} />
+        <Route path='/cart/:cart_id/' element={<Cart />} />
         <Route path='/push_product' element={<Push_Product />} />
         <Route path='/exams' element={<Exams />} />
-        <Route path='/exam/:exam_id' element={<Exam />} />
-        <Route path='/join_exam/:exam_id' element={<Join_Exam />} />
+        <Route path='/exam/:exam_id/' element={<Exam />} />
+        <Route path='/join_exam/:exam_id/' element={<Join_Exam />} />
         <Route path='/exam/:exam_id/last_results' element={<Results />} />
         <Route path='/consultation/:consultation_id/' element={<Consultations />} />
         <Route path='/consultations' element={<ConsultationsPage />} />
         <Route path='/live-streaming' element={<LiveStreaming />} />
         <Route path='/scene' element={<Scene />} />
-        <Route path='/payment/:SubscriptionType/:PaymentToken' element={<Payment />} />
+        <Route path='/payment/:SubscriptionType/:PaymentToken/' element={<Payment />} />
         <Route path="*" element={<NotFound />} />
         {/*<Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />          
@@ -67,6 +67,15 @@ ReactDOM.render(
         <Route path='/About' element={<About />} />
         <Route path='/Contact_us' element={<Contact />} />
 <Route path='*' element={<><Header/><br/><br/><br/><br/><br/><br/><div align="center"><img src={ERROR} width="300" /><h1 style={{color:'crimson'}}>Not Found!</h1></div></>} />*/}
+        <Redirect from="/consultation/:consultation_id" to="/consultation/:consultation_id/" />
+        <Redirect from="/courses/:course_id" to="/courses/:course_id/" />
+        <Redirect from="/courses/:course_id/:lesson_name" to="/courses/:course_id/:lesson_name/" />
+        <Redirect from="/tickets/:ticket_id" to="/tickets/:ticket_id/" />
+        <Redirect from="/products/:product_id" to="/products/:product_id/" />
+        <Redirect from="/cart/:cart_id" to="/cart/:cart_id/" />
+        <Redirect from="/exam/:exam_id" to="/exam/:exam_id/" />
+        <Redirect from="/join_exam/:exam_id" to="/join_exam/:exam_id/" />
+        <Redirect from="/payment/:SubscriptionType/:PaymentToken" to="/payment/:SubscriptionType/:PaymentToken/" />
       </Routes>
     </Router>
   ,
@@ -74,6 +83,4 @@ ReactDOM.render(
 );
 
 // If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// to log results (for example: reportWeb
