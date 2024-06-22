@@ -1,4 +1,1 @@
-# Redirect /consultation/:consultation_id to /consultation/:consultation_id/
 /consultation/:consultation_id /consultation/:consultation_id/ 301
-
-/* /index.html 200
