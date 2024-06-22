@@ -22,7 +22,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [searchParams, setSearchParams] = useSearchParams();
     const LoginProcess = () => {
-        axios.post(`http://${process.env.REACT_APP_DB_SERVER_URI}/users/login`, {email,password})
+        axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/users/login`, {email,password})
             .then((res)=>{
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('email', res.data.email)
@@ -130,7 +130,7 @@ export default function Login() {
                                 justifyContent:'space-between',
                                 alignItems:'center'
                             }}>
-                                <Link to='http://localhost:3000/sign_up'><h5 style={{fontSize:'12px'}}>ليس لدي حساب؟</h5></Link>
+                                <Link to={`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/sign_up`}><h5 style={{fontSize:'12px'}}>ليس لدي حساب؟</h5></Link>
                                 <button value="تسجيل الدخول" onClick={()=>LoginProcess()}>تسجيل الدخول</button>
                             </div>
                         </div>
