@@ -89,11 +89,11 @@ export default function Exams() {
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
-    axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+    axios.post(`${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
       .then((res)=>{
         if(res.data.firstName !== undefined && res.data.secondName !== undefined)
           setName(res.data.firstName+' '+res.data.secondName)
-          axios.post(`http://localhost:8082/exam_details`, {email:res.data.email,exam_id})
+          axios.post(`${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_DB_SERVER_URI}/exam_details`, {email:res.data.email,exam_id})
                 .then((exam)=>{
                   setExamTopic(exam.data.exam_topic);
                   setExamDescription(exam.data.exam_description)
@@ -137,7 +137,7 @@ export default function Exams() {
           </ul>
           <div align="center">
             <h3 style={{lineHeight:'100px'}}>هل أنت مستعد للاختبار؟</h3>
-            <button className="exam-entering-button" onClick={()=>window.location.href=`http://localhost:3000/join_exam/${exam_id}`}>الدخول للاختبار</button>
+            <button className="exam-entering-button" onClick={()=>window.location.href=`${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_WEBSITE_URI}/join_exam/${exam_id}`}>الدخول للاختبار</button>
           </div>
         </div>
       </div>

@@ -90,26 +90,26 @@ export default function ConsultationsPage() {
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
-    axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
       .then((res)=>{
         if(res.data.firstName !== undefined && res.data.secondName !== undefined)
           setName(res.data.firstName+' '+res.data.secondName)
           setEmail(res.data.email)
           console.log('explore')
-          axios.post('http://localhost:8082/consultationer-permission', {email: res.data.email})
+          axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultationer-permission`, {email: res.data.email})
                 .then((res2)=>{
                     setConsultationer(res2.data.consultationer)
                     console.log(res2.data)
                     setLoading(false)
                     if(res2.data.consultationer) {
-                      axios.post('http://localhost:8082/all-consultations', {email: res.data.email})
+                      axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/all-consultations`, {email: res.data.email})
                             .then((res3)=>{
                               setTakenConsultations(res3.data.user_taken_consultations)
                               console.log('hgikdjhjgtiojkrfpodjihugvfkr', res3.data)
                               setAvailableConsultations(res3.data.available_to_take_consultations)
                             })
                     } else {
-                      axios.post('http://localhost:8082/user-consultations', {email:res.data.email})
+                      axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/user-consultations`, {email:res.data.email})
                             .then((res3)=>{
                                 setConsultations(res3.data.user_consultations)
                             }).catch((err)=>{
@@ -124,17 +124,17 @@ export default function ConsultationsPage() {
       })
   },[])
   const createConsultation = () => {
-    axios.post('http://localhost:8082/create-consultation', {email})
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/create-consultation`, {email})
             .then((res)=>{
-                window.location.href=`http://localhost:3000/consultation/${res.data.consultation_id}`
+                window.location.href=`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/consultation/${res.data.consultation_id}`
             }).catch((err)=>{
                 console.log(err)
             })
   }
   const takeConsultation = (consultation_id) => {
-    axios.post(`http://localhost:8082/consultation-take/${consultation_id}`, {email})
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultation-take/${consultation_id}`, {email})
           .then((res)=>{
-            window.location.href=`http://localhost:3000/consultation/${consultation_id}`;
+            window.location.href=`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/consultation/${consultation_id}`;
           }).catch((err)=>{
             console.log(err)
           })
@@ -204,7 +204,7 @@ export default function ConsultationsPage() {
                         alignItems:'center'
                       }}>
                         <h5 className="blue-color" style={{fontSize:'13px'}}>متاحة</h5>
-                        <button className="test-explore-div-button-page" onClick={()=>window.location.href=`http://localhost:3000/consultation/${consultation.consultation_id}`}>اذهب</button>
+                        <button className="test-explore-div-button-page" onClick={()=>window.location.href=`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/consultation/${consultation.consultation_id}`}>اذهب</button>
                       </div>
                     </div>
                   </div>
@@ -282,7 +282,7 @@ export default function ConsultationsPage() {
                       alignItems:'center'
                     }}>
                       <h5 className="blue-color" style={{fontSize:'13px'}}>متاحة</h5>
-                      <button className="test-explore-div-button-page" onClick={()=>window.location.href=`http://localhost:3000/consultation/${consultation.consultation_id}`}>اذهب</button>
+                      <button className="test-explore-div-button-page" onClick={()=>window.location.href=`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/consultation/${consultation.consultation_id}`}>اذهب</button>
                     </div>
                   </div>
                 )

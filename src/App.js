@@ -82,13 +82,13 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
-    console.log('yesddd')
-    axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+    console.log('yesddd',process.env.REACT_APP_DB_SERVER_URI,process.env.REACT_APP_WEBSITE_URI)
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
       .then((res)=>{
         if(res.data.firstName !== undefined && res.data.secondName !== undefined)
           setName(res.data.firstName+' '+res.data.secondName)
           setLoading(false)
-          axios.post('http://localhost:8082/explore_exams_progress', {email:res.data.email})
+          axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/explore_exams_progress`, {email:res.data.email})
           .then((res2)=>{
               setExams(res2.data.exams)
           }).catch((err)=>{
@@ -264,7 +264,7 @@ export default function App() {
                       alignItems:'center'
                     }}>
                       <h5 className="blue-color" style={{fontSize:'13px'}}>فردي: {test.price} ر.س </h5>
-                      <button className="test-explore-div-button-page" onClick={()=>window.location.href=`http://localhost:3000/exam/${test._id}`}>تجربة</button>
+                      <button className="test-explore-div-button-page" onClick={()=>window.location.href=`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/exam/${test._id}`}>تجربة</button>
                     </div>
                   </div>
                 )

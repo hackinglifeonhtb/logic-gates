@@ -108,20 +108,20 @@ export default function Consultations() {
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
-    axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
       .then((res)=>{
           console.log(res.data)
           setUsername(res.data.firstName+' '+res.data.secondName)
           setEmail(res.data.email)
           console.log('explore')
-          axios.post(`http://localhost:8082/consultation/${consultation_id}`, {email:res.data.email})
+          axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultation/${consultation_id}`, {email:res.data.email})
                 .then((res2)=>{
                     console.log(res2.data)
                     setMessages(res2.data.messages)
                     setTags(res2.data.tags)
                     setConsultationer(res2.data.consultationer)
                     setLoading(false)
-                    axios.post(`http://localhost:8082/consultation-remove-notifications/${consultation_id}`, {email:res.data.email})
+                    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultation-remove-notifications/${consultation_id}`, {email:res.data.email})
                             .then((response)=>{
                                 setNotifications(response.data.user_notifications)
                             }).catch((err)=>{
@@ -135,7 +135,7 @@ export default function Consultations() {
       })
   },[])
   const sendMessage = () =>{
-    axios.post(`http://localhost:8082/consultation-send-message/${consultation_id}`, {username, message, email})
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultation-send-message/${consultation_id}`, {username, message, email})
         .then((res)=>{
             console.log(username)
             //setMessages((messages)=>[...messages, {username:username, message}])
@@ -144,7 +144,7 @@ export default function Consultations() {
         })
   }
   const typingMessage = (typing_status) => {
-    axios.post(`http://localhost:8082/consultation-typing-message/${consultation_id}`, {username, email, typing: typing_status})
+    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultation-typing-message/${consultation_id}`, {username, email, typing: typing_status})
             .then((res)=>{
                 console.log(username, res.data.typing)
             }).catch((err)=>{

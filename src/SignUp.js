@@ -22,7 +22,7 @@ export default function SignUp() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const LoginProcess = () => {
-        axios.post('http://localhost:8082/users/login', {email,password})
+        axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/users/login`, {email,password})
             .then((res)=>{
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('email', res.data.email)
@@ -36,7 +36,7 @@ export default function SignUp() {
                     progress: undefined,
                 })
                 setTimeout(()=>{
-                    window.location.replace('http://localhost:3000')
+                    window.location.replace(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}`)
                 }, 1500);
             }).catch((err)=>{
                 toast.error('تأكد من صحة البيانات', {
@@ -51,7 +51,7 @@ export default function SignUp() {
             })
     }
     const SignUpProcess = () => {
-        axios.post('http://localhost:8082/users/register', {firstName, secondName, email,password})
+        axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/users/register`, {firstName, secondName, email,password})
             .then((res)=>{
                 LoginProcess()
             }).catch((err)=>{
@@ -230,7 +230,7 @@ export default function SignUp() {
                                 <input type="password" className='text-success' placeholder="كلمة المرور الخاصة بك" onChange={(e)=>setPassword(e.target.value)} />
                             </div>
                             <br/>
-                            <Link to='http://localhost:3000/sign_up'><h5 style={{padding:'15px'}}>ليس لدي حساب؟</h5></Link>
+                            <Link to={`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/sign_up`}><h5 style={{padding:'15px'}}>ليس لدي حساب؟</h5></Link>
                             <button value="تسجيل الدخول" onClick={()=>SignUpProcess()}>تسجيل الدخول</button>
                         </div>
                     </div>

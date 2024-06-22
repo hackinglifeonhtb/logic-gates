@@ -95,12 +95,12 @@ export default function Exams() {
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd')
-    axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+    axios.post(`${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
       .then((res)=>{
         if(res.data.firstName !== undefined && res.data.secondName !== undefined)
           setName(res.data.firstName+' '+res.data.secondName)
           setEmail(res.data.email)
-          axios.post(`http://localhost:8082/exam_join`, {email:res.data.email,exam_id})
+          axios.post(`${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_DB_SERVER_URI}/exam_join`, {email:res.data.email,exam_id})
                 .then((exam)=>{
                   console.log(exam.data.exam)
                   setExam([exam.data.exam])
@@ -120,9 +120,9 @@ export default function Exams() {
     }
   }
   const end_exam = (answer) => {
-    axios.post(`http://localhost:8082/exam_ended`, {email:email, exam_id, result: result+(answer.correct ? percent : 0)})
+    axios.post(`${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_DB_SERVER_URI}/exam_ended`, {email:email, exam_id, result: result+(answer.correct ? percent : 0)})
           .then((data)=>{
-            window.location.href = `http://localhost:3000/exam/${exam_id}/last_results`;
+            window.location.href = `${process.env.REACT_APP_WEBSITE_URI}://${process.env.REACT_APP_WEBSITE_URI}/exam/${exam_id}/last_results`;
           }).catch((err)=>{
             console.log(err)
           })

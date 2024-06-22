@@ -37,13 +37,13 @@ export default function Lessons() {
     const [ready, setReady] = useState(false)
     const {course_id, lesson_name} = useParams();
     useEffect(()=>{
-        axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+        axios.post(`${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
             .then((res)=>{
                 if(res.data.firstName !== undefined && res.data.secondName !== undefined)
                     setVerifiedData([res.data.firstName, res.data.secondName, res.data.email])
                     setName(res.data.firstName+' '+res.data.secondName)
                     setUserID(res.data.user_id)
-                    axios.post(`http://localhost:8082/getCourse/${course_id}`, {email:localStorage.getItem('email')})
+                    axios.post(`${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/getCourse/${course_id}`, {email:localStorage.getItem('email')})
                         .then((course)=>{
                             setCourse([course.data.courseAndTeacherData]);
                             console.log([course.data.courseAndTeacherData][0].lessons[0].Name)
@@ -61,7 +61,7 @@ export default function Lessons() {
                             })
                             if(!course.data.courseAndTeacherData.progress.Lessons[lesson_name]) {
                                 setTimeout(()=>{
-                                    axios.post(`http://localhost:8082/lessonCompleted/${course_id}/${lesson_name}`, {email:localStorage.getItem('email')})
+                                    axios.post(`${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/lessonCompleted/${course_id}/${lesson_name}`, {email:localStorage.getItem('email')})
                                         .then((res)=>{
                                             course.data.courseAndTeacherData.progress.Lessons[lesson_name] = true;
                                             setCourse([course.data.courseAndTeacherData])
@@ -91,7 +91,7 @@ export default function Lessons() {
                         }).catch((err)=>{
                             console.log(err)
                         })
-                    // axios.post('http://localhost:8082/getCoursesEnrolledIn', {email: res.data.email})
+                    // axios.post('${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/getCoursesEnrolledIn', {email: res.data.email})
                     //     .then((coursesEnrolledIn)=>{
                     //         setCoursesEnrolledIn(coursesEnrolledIn.coursesEnrolledIn)
                     //     }).catch((err)=>{
@@ -101,11 +101,11 @@ export default function Lessons() {
                 console.log(err)
             })
         /*
-            axios.post('http://localhost:8082/getCoursesEnrolledIn', {email: verifiedData.email})
+            axios.post('${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/getCoursesEnrolledIn', {email: verifiedData.email})
         */
     },[])
     const new_comment = () => {
-        axios.post(`http://localhost:8082/social/new_comment/${course_id}/${lesson_name}/${userID}`, {email: localStorage.getItem('email'), name: name, comment: comment})
+        axios.post(`${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/social/new_comment/${course_id}/${lesson_name}/${userID}`, {email: localStorage.getItem('email'), name: name, comment: comment})
             .then((res)=>{
                 toast.success(res.data.message, {
                     position: "top-right",
@@ -221,7 +221,7 @@ export default function Lessons() {
                                 Object.keys(course[0]).length>0?
                                     course[0].lessons.map((lesson, index)=>{
                                         return (
-                                            <Link to={`http://localhost:3000/courses/${course_id}/${lesson.Name}`} style={{textDecoration:'none'}}>
+                                            <Link to={`${process.env.SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/courses/${course_id}/${lesson.Name}`} style={{textDecoration:'none'}}>
                                                 <div style={{
                                                     justifyContent:'space-between',
                                                     padding:'20px',

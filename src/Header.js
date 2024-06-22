@@ -26,16 +26,16 @@ export default function Header( props ) {
     const [onlineUsers, setOnlineUsers] = useState([])
     const [online, setIsOnline] = useState('')
     useEffect(()=>{
-        axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+        axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
             .then((res)=>{
                 if(res.data.firstName !== undefined && res.data.secondName !== undefined)
                     setVerified(true);
                     setName(res.data.firstName+' '+res.data.secondName)
-                    axios.post("http://localhost:8082/get_user_id", {email: res.data.email})
+                    axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/get_user_id`, {email: res.data.email})
                         .then((response)=>{
                             console.log(response.data)
                             setUserId(response.data.user_id)
-                            axios.post("http://localhost:8082/user-notifications", {email:res.data.email})
+                            axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/user-notifications`, {email:res.data.email})
                                     .then((response2)=>{
                                         console.log(response2.data)
                                         setNotifications((notifications)=>[...notifications, ...response2.data.user_notifications])
@@ -47,7 +47,7 @@ export default function Header( props ) {
                         })
             }).catch((err)=>{
                 console.log(window.location.href)
-                window.location.replace(`http://localhost:3000/login?refer_to=${window.location.href}`)
+                //window.location.replace(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/login?refer_to=${window.location.href}`)
                 console.log(window.location.href)
             })
     }, [])
@@ -55,7 +55,7 @@ export default function Header( props ) {
       const pusher = new Pusher('19c2eb03ffadb575a377', {
         cluster: 'ap2'
     });
-      axios.post('http://localhost:3000/pusher/auth', {
+      axios.post('${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/pusher/auth', {
 
   socket_id: pusher.connection.socket_id,
 
@@ -249,7 +249,7 @@ export default function Header( props ) {
   <div class="dropdown-menu" dir="rtl" style={{display:`${clicked2 ? 'block' : 'none'}`, direction:'rtl',marginRight:'-90px'}} aria-labelledby="dropdownMenuLink">
     {notifications.length > 0 ? notifications.map((notification,index)=>{
         return (
-            <Link className="dropdown-item" to={`http://localhost:3000/consultation/${notification.consultation_id}`} style={{borderBottom:`${index < notifications.length-1 ? "1px solid grey" : "0px"}`}}>
+            <Link className="dropdown-item" to={`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_WEBSITE_URI}/consultation/${notification.consultation_id}`} style={{borderBottom:`${index < notifications.length-1 ? "1px solid grey" : "0px"}`}}>
                 <div>
                     <h6 style={{fontSize:'11px'}}>{notification.notification_title}</h6>
                     <h6 style={{fontSize:'10px'}}>{notification.notification_user}</h6>

@@ -22,7 +22,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [searchParams, setSearchParams] = useSearchParams();
     const LoginProcess = () => {
-        axios.post('http://localhost:8082/users/login', {email,password})
+        axios.post(`http://${process.env.REACT_APP_DB_SERVER_URI}/users/login`, {email,password})
             .then((res)=>{
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('email', res.data.email)

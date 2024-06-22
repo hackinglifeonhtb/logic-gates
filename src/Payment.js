@@ -17,7 +17,7 @@ export default function Payment() {
     const [name, setName] = useState('');
     useEffect(()=>{
         console.log('yesddd')
-        axios.post(`http://localhost:8082/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
+        axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/api/verify`, {token: localStorage.getItem('token') || ''}, {headers:{'x-access-token':localStorage.getItem('token'), 'email':localStorage.getItem('email')}})
           .then((res)=>{
             if(res.data.firstName !== undefined && res.data.secondName !== undefined)
               setName(res.data.firstName+' '+res.data.secondName)
