@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, Routes, BrowserRouter as Router, Navigate } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router, Navigate, useParams } from "react-router-dom";
 import './index.css';
 import App from './App';
 import Login from './Login';
@@ -31,10 +31,6 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
     <Router basename="/">
       <Routes>
-        <Route
-          path="/*/"
-          element={<Navigate replace to={pathname => pathname.replace(/\/$/, '')} />}
-        />        
         <Route path='/' element={<App />} />
         <Route path='/login' element={<Login />} />
         <Route path='/sign_up' element={<SignUp />} />
@@ -53,31 +49,24 @@ ReactDOM.render(
         <Route path='/exam/:exam_id' element={<Exam />} />
         <Route path='/join_exam/:exam_id' element={<Join_Exam />} />
         <Route path='/exam/:exam_id/last_results' element={<Results />} />
-        <Route path='/consultation/:consultation_id/' element={<Consultations />} />
+        <Route path='/consultation/:consultation_id' element={<Navigate to={`/consultation/${consultation_id}/`} replace />} />
         <Route path='/consultations' element={<ConsultationsPage />} />
         <Route path='/live-streaming' element={<LiveStreaming />} />
         <Route path='/scene' element={<Scene />} />
         <Route path='/payment/:SubscriptionType/:PaymentToken' element={<Payment />} />
+        <Route path="/courses/:course_id" element={<Navigate to={`/courses/${course_id}/`} replace />} />
+        <Route path="/courses/:course_id/:lesson_name" element={<Navigate to={`/courses/${course_id}/${lesson_name}/`} replace />} />
+        <Route path="/tickets/:ticket_id" element={<Navigate to={`/tickets/${ticket_id}/`} replace />} />
+        <Route path="/products/:product_id" element={<Navigate to={`/products/${product_id}/`} replace />} />
+        <Route path="/cart/:cart_id" element={<Navigate to={`/cart/${cart_id}/`} replace />} />
+        <Route path="/exam/:exam_id" element={<Navigate to={`/exam/${exam_id}/`} replace />} />
+        <Route path="/join_exam/:exam_id" element={<Navigate to={`/join_exam/${exam_id}/`} replace />} />
+        <Route path="/exam/:exam_id/last_results" element={<Navigate to={`/exam/${exam_id}/last_results/`} replace />} />
         <Route path="*" element={<NotFound />} />
-        {/*<Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />          
-<Route path='/challenges/:challenge' element={<Challenge />} />*/}
-        {/*<Route path='/About' element={<About />} />*/}
-        {/*<Route path='/:token/week_challenge' element={<Week />} />
-        <Route path='/:token/new_challenge' element={<New />} />
-        <Route path='/join_to_challenge' element={<Test />} />
-        <Route path='/Live' element={<Live />} />
-        <Route path='/Community' element={<ChatRoom />} />
-        <Route path='/About' element={<About />} />
-        <Route path='/Contact_us' element={<Contact />} />
-<Route path='*' element={<><Header/><br/><br/><br/><br/><br/><br/><div align="center"><img src={ERROR} width="300" /><h1 style={{color:'crimson'}}>Not Found!</h1></div></>} />*/}
       </Routes>
     </Router>
   ,
   document.getElementById("root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
