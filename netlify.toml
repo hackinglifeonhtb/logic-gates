@@ -1,4 +1,6 @@
-[[rewrites]]
+[build]
+  trailingSlash = true
+[rewrites]]
   from = "/consultation/:consultation_id"
   to = "/consultation/:consultation_id/"
   query = { }
