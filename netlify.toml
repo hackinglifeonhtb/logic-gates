@@ -1,2 +1,4 @@
-[build]
-  trailingSlash = false
+[[redirects]]
+  from = "/consultation/:consultation_id"
+  to = "/consultation/:consultation_id/"
+  status = 301
