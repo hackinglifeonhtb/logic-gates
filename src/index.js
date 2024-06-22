@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router, Redirect } from "react-router-dom";
 import './index.css';
 import App from './App';
 import Login from './Login';
@@ -31,6 +31,7 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
     <Router basename="/">
       <Routes>
+        <Redirect from="/*/" to={pathname => pathname.replace(/\/$/, '')} />
         <Route path='/' element={<App />} />
         <Route path='/login' element={<Login />} />
         <Route path='/sign_up' element={<SignUp />} />
