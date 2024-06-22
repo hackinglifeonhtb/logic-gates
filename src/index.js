@@ -54,14 +54,14 @@ ReactDOM.render(
         <Route path='/live-streaming' element={<LiveStreaming />} />
         <Route path='/scene' element={<Scene />} />
         <Route path='/payment/:SubscriptionType/:PaymentToken' element={<Payment />} />
-        <Route path="/courses/:course_id" element={<Navigate to={`/courses/${course_id}/`} replace />} />
-        <Route path="/courses/:course_id/:lesson_name" element={<Navigate to={`/courses/${course_id}/${lesson_name}/`} replace />} />
-        <Route path="/tickets/:ticket_id" element={<Navigate to={`/tickets/${ticket_id}/`} replace />} />
-        <Route path="/products/:product_id" element={<Navigate to={`/products/${product_id}/`} replace />} />
-        <Route path="/cart/:cart_id" element={<Navigate to={`/cart/${cart_id}/`} replace />} />
-        <Route path="/exam/:exam_id" element={<Navigate to={`/exam/${exam_id}/`} replace />} />
-        <Route path="/join_exam/:exam_id" element={<Navigate to={`/join_exam/${exam_id}/`} replace />} />
-        <Route path="/exam/:exam_id/last_results" element={<Navigate to={`/exam/${exam_id}/last_results/`} replace />} />
+        <Route path="/courses/:course_id" element={<Navigate to={`/courses/${useParams().course_id}/`} replace />} />
+        <Route path="/courses/:course_id/:lesson_name" element={<Navigate to={`/courses/${useParams().course_id}/${useParams().lesson_name}/`} replace />} />
+        <Route path="/tickets/:ticket_id" element={<Navigate to={`/tickets/${useParams().ticket_id}/`} replace />} />
+        <Route path="/products/:product_id" element={<Navigate to={`/products/${useParams().product_id}/`} replace />} />
+        <Route path="/cart/:cart_id" element={<Navigate to={`/cart/${useParams().cart_id}/`} replace />} />
+        <Route path="/exam/:exam_id" element={<Navigate to={`/exam/${useParams().exam_id}/`} replace />} />
+        <Route path="/join_exam/:exam_id" element={<Navigate to={`/join_exam/${useParams().exam_id}/`} replace />} />
+        <Route path="/exam/:exam_id/last_results" element={<Navigate to={`/exam/${useParams().exam_id}/last_results/`} replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
