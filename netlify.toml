@@ -2,4 +2,4 @@
   from = "/consultation/:consultation_id"
   to = "/consultation/:consultation_id/"
   query = { }
-  status = 200
+  status = 301
