@@ -1,2 +1,3 @@
 /* /index.html 200
+/consultation/:consultation /consultation/index.html
 /consultation/* https://logicgates.app/consultation/:splat 200!
