@@ -1,4 +1,5 @@
-[[redirects]]
+[[rewrites]]
   from = "/consultation/:consultation_id"
   to = "/consultation/:consultation_id/"
-  status = 301
+  query = { }
+  status = 200
