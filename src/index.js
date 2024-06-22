@@ -29,7 +29,7 @@ import NotFound from './NotFound'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-    <Router>
+    <Router basename="/">
       <Routes>
         <Route path='/' element={<App />} />
         <Route path='/login' element={<Login />} />
