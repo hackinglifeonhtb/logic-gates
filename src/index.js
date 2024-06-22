@@ -25,6 +25,7 @@ import ConsultationsPage from './ConsultationsPage'
 import LiveStreaming from './LiveStreaming'
 import Scene from './Scene'
 import Payment from './Payment'
+import NotFound from './NotFound'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -53,6 +54,7 @@ ReactDOM.render(
         <Route path='/live-streaming' element={<LiveStreaming />} />
         <Route path='/scene' element={<Scene />} />
         <Route path='/payment/:SubscriptionType/:PaymentToken' element={<Payment />} />
+        <Route path="*" element={<NotFound />} />
         {/*<Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />          
 <Route path='/challenges/:challenge' element={<Challenge />} />*/}
