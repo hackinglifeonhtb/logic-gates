@@ -49,7 +49,7 @@ ReactDOM.render(
         <Route path='/exam/:exam_id' element={<Exam />} />
         <Route path='/join_exam/:exam_id' element={<Join_Exam />} />
         <Route path='/exam/:exam_id/last_results' element={<Results />} />
-        <Route path='/consultation/:consultation_id' element={<Consultations />} />
+        <Route path='/consultation/:consultation_id' component={Consultations} />
         <Route path='/consultations' element={<ConsultationsPage />} />
         <Route path='/live-streaming' element={<LiveStreaming />} />
         <Route path='/scene' element={<Scene />} />
