@@ -2,3 +2,7 @@
   package = "@netlify/plugin-emails"
 [build]
     functions="functions"
+[[redirects]]
+  from = "/consultation/*"
+  to = "/index.html"
+  status = 200
