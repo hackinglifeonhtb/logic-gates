@@ -5,4 +5,4 @@
 [[redirects]]
   from = "/consultation/*"
   to = "/index.html"
-  status = 200
+  status = 301
