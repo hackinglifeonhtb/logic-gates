@@ -30,8 +30,8 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <Router basename="/">
-      <Switch>
-        <Route path='/' element={<App />} />
+      <Routes>
+        <Route exact path='/' element={<App />} />
         <Route path='/login' element={<Login />} />
         <Route path='/sign_up' element={<SignUp />} />
         <Route path='/courses' element={<Courses />} />
@@ -67,7 +67,7 @@ ReactDOM.render(
         <Route path='/About' element={<About />} />
         <Route path='/Contact_us' element={<Contact />} />
 <Route path='*' element={<><Header/><br/><br/><br/><br/><br/><br/><div align="center"><img src={ERROR} width="300" /><h1 style={{color:'crimson'}}>Not Found!</h1></div></>} />*/}
-      </Switch>
+      </Routes>
     </Router>
   ,
   document.getElementById("root")

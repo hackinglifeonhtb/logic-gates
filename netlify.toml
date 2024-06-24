@@ -3,6 +3,6 @@
 [build]
     functions="functions"
 [[redirects]]
-  from = "/consultation/*"
+  from = "/consultation/:consultation_id"
   to = "/index.html"
   status = 200
