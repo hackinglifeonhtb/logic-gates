@@ -1,11 +1,1 @@
 /* /index.html 200
-/consultation/:consultation_id /consultation/:consultation_id/ 301
-/courses/:course_id /courses/:course_id/ 301
-/courses/:course_id/:lesson_name /courses/:course_id/:lesson_name/ 301
-/tickets/:ticket_id /tickets/:ticket_id/ 301
-/products/:product_id /products/:product_id/ 301
-/cart/:cart_id /cart/:cart_id/ 301
-/exam/:exam_id /exam/:exam_id/ 301
-/exam/:exam_id/last_results /exam/:exam_id/last_results/ 301
-/join_exam/:exam_id /join_exam/:exam_id/ 301
-/payment/:SubscriptionType/:PaymentToken /payment/:SubscriptionType/:PaymentToken/ 301
