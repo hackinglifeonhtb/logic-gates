@@ -21,6 +21,17 @@ export default function SignUp() {
     const [secondName, setSecondName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const handleSubmit = () => {
+        //Calling to the Netlify Function you created
+        fetch("./.netlify/functions/triggerSubscribeEmail", {
+          method: "POST",
+          body: JSON.stringify({
+            subscriberName: firstName + ' ' + secondName,
+            subscriberEmail: email,
+            inviteeEmail: "info@netlify.com"
+          })
+        })
+      }
     const LoginProcess = () => {
         axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/users/login`, {email,password})
             .then((res)=>{
@@ -51,17 +62,6 @@ export default function SignUp() {
                 });
             })
     }
-    const handleSubmit = () => {
-        //Calling to the Netlify Function you created
-        fetch("./.netlify/functions/triggerSubscribeEmail", {
-          method: "POST",
-          body: JSON.stringify({
-            subscriberName: firstName + ' ' + secondName,
-            subscriberEmail: email,
-            inviteeEmail: "info@netlify.com"
-          })
-        })
-      }
     const SignUpProcess = () => {
         axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/users/register`, {firstName, secondName, email,password})
             .then((res)=>{
