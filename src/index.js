@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, Routes, BrowserRouter as Router, Redirect } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router, Redirect, Switch } from "react-router-dom";
 import './index.css';
 import App from './App';
 import Login from './Login';
@@ -30,7 +30,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <Router basename="/">
-      <Routes>
+      <Switch>
         <Route path='/' element={<App />} />
         <Route path='/login' element={<Login />} />
         <Route path='/sign_up' element={<SignUp />} />
@@ -67,7 +67,7 @@ ReactDOM.render(
         <Route path='/About' element={<About />} />
         <Route path='/Contact_us' element={<Contact />} />
 <Route path='*' element={<><Header/><br/><br/><br/><br/><br/><br/><div align="center"><img src={ERROR} width="300" /><h1 style={{color:'crimson'}}>Not Found!</h1></div></>} />*/}
-      </Routes>
+      </Switch>
     </Router>
   ,
   document.getElementById("root")
