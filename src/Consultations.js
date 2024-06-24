@@ -133,7 +133,7 @@ export default function Consultations() {
       }).catch((err)=>{
 
       })
-  },[])
+  },[consultation_id])
   const sendMessage = () =>{
     axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/consultation-send-message/${consultation_id}`, {username, message, email})
         .then((res)=>{
