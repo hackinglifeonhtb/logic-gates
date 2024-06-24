@@ -80,6 +80,20 @@ export default function App() {
   const video4animation = batch(StickyOut(), FadeIn(), ZoomIn(), MoveOut(0,-200));
   const [exams, setExams] = useState([])
   const [loading, setLoading] = useState(true)
+  const [firstName, setFirstName] = useState('Test');
+  const [secondName, setSecondName] = useState('Test');
+  const [email, setEmail] = useState('logic2tubes@gmail.com')
+  const handleSubmit = () => {
+    //Calling to the Netlify Function you created
+    fetch("./.netlify/functions/triggerSubscribeEmail", {
+      method: "POST",
+      body: JSON.stringify({
+        subscriberName: firstName + ' ' + secondName,
+        subscriberEmail: email,
+        inviteeEmail: "info@netlify.com"
+      })
+    })
+  }
   useEffect(()=>{
     setRandomW([`${Math.random()*75}%`,`${Math.random()*75}%`,`${Math.random()*75}%`])
     console.log('yesddd',process.env.REACT_APP_DB_SERVER_URI,process.env.REACT_APP_WEBSITE_URI)
@@ -91,6 +105,7 @@ export default function App() {
           axios.post(`${process.env.REACT_APP_SSL_AVAILABILITY}://${process.env.REACT_APP_DB_SERVER_URI}/explore_exams_progress`, {email:res.data.email})
           .then((res2)=>{
               setExams(res2.data.exams)
+              handleSubmit();
           }).catch((err)=>{
               console.log(err)
           })
