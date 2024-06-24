@@ -5,7 +5,7 @@ import cpp from './Images/cpp.svg.png'
 import java from './Images/java.png'
 import js from './Images/js-removebg-preview.png'
 import python from './Images/python-removebg-preview.png'
-import ruby from './Images/ruby.png'
+import ruby from './Images/ruby.png';
 import './App.css'
 import man1 from './Images/man1.jpg'
 import man2 from './Images/man2.jpg'
